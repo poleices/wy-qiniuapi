@@ -1,14 +1,11 @@
 /*global plupload */
-/*global qiniu */
+
 import plupload from "plupload"
-import QiniuJsSDK from "./qiniu"
 
-const Qiniu=new QiniuJsSDK();
-
-function FileProgress(file, targetID) {
+function FileProgress(file, targetID, qiniu) {
   this.fileProgressID = file.id;
   this.file = file;
-
+  this.Qiniu=qiniu;
   this.opacity = 100;
   this.height = 0;
   this.fileProgressWrapper = $('#' + this.fileProgressID);
@@ -201,11 +198,10 @@ FileProgress.prototype.setProgress = function(percentage, speed, chunk_size) {
 };
 
 FileProgress.prototype.setComplete = function(up, info) {
+  var _this=this;
   var td = this.fileProgressWrapper.find('td:eq(2)'),
     tdProgress = td.find('.progress');
-      console.log('-------2*info-----');
-      console.log(JSON.stringify(info));
-  // var res = $.parseJSON(info);
+
   var res=$.extend({},info,JSON.parse(info.response));
   var url,str;
   if (res.url) {
@@ -329,7 +325,7 @@ FileProgress.prototype.setComplete = function(up, info) {
           dx: 100,
           dy: 100
         });
-        var url = Qiniu.pipeline(fopArr, key);
+        var url = _this.Qiniu.pipeline(fopArr, key);
         $('#myModal-img').on('hide.bs.modal', function() {
           $('#myModal-img').find('.btn-default').removeClass(
             'disabled');
@@ -347,16 +343,16 @@ FileProgress.prototype.setComplete = function(up, info) {
         return false;
       });
 
-      var ie = Qiniu.detectIEVersion();
+      var ie = _this.Qiniu.detectIEVersion();
       if (!(ie && ie <= 9)) {
-        var exif = Qiniu.exif(res.key);
+        var exif = _this.Qiniu.exif(res.key);
         if (exif) {
           var exifLink = $('<a href="" target="_blank">查看exif</a>');
           exifLink.attr('href', url + '?exif');
           infoWrapper.append(exifLink);
         }
 
-        var imageInfo = Qiniu.imageInfo(res.key);
+        var imageInfo = _this.Qiniu.imageInfo(res.key);
         var infoArea = $('<div/>');
         var infoInner = '<div>格式：<span class="origin-format">' +
           imageInfo.format + '</span></div>' +

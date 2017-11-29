@@ -74,6 +74,7 @@ import plupload from 'plupload'
 
 
         var that = this;
+        this.domain="";
         this.options={
 			runtimes: 'html5,flash,html4',
 			browse_button: 'upfile',
@@ -948,7 +949,7 @@ import plupload from 'plupload'
             that.uptoken_url = op.uptoken_url;
             that.token = '';
             that.key_handler = typeof op.init.Key === 'function' ? op.init.Key : '';
-            this.domain = op.domain;
+            that.domain = op.domain;
             // TODO: ctx is global in scope of a uploader instance
             // this maybe cause error
             var ctx = '';
@@ -1502,7 +1503,7 @@ import plupload from 'plupload'
                         }
                         ajax.open('POST', url, true);
                         ajax.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
-                        console.log('uptoken:'+that.token);
+                        // console.log('uptoken:'+that.token);
                         ajax.setRequestHeader('Authorization', 'UpToken ' + that.token);
                         var onreadystatechange = function () {
                             logger.debug("ajax.readyState: ", ajax.readyState);
@@ -1644,6 +1645,7 @@ import plupload from 'plupload'
             imageUrl += q ? '/q/' + q : '';
             imageUrl += format ? '/format/' + format : '';
             if (key) {
+                alert(op.domain);
                 imageUrl = this.getUrl(key) + '?' + imageUrl;
             }
             return imageUrl;
@@ -1853,7 +1855,7 @@ import plupload from 'plupload'
 
     // var Qiniu = new QiniuJsSDK();
 
-    export default QiniuJsSDK;
+     export default QiniuJsSDK;
 
     // global.Qiniu = Qiniu;
     // global.QiniuJsSDK = QiniuJsSDK;
