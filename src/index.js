@@ -61,7 +61,6 @@ import $ from "jquery"
 			}
 		};
 		if(!!this.$element.data("extensions")){
-			alert(this.$element.data("extensions"));
 			this.defaults.filters[0].extensions=this.$element.data("extensions");
 		}
 
