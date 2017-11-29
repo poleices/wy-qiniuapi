@@ -1,6 +1,6 @@
 {
   "name": "wy-qiniuapi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a package for wy uploading files to qiniu cloud",
   "main": "./src/index.js",
   "scripts": {
